@@ -10,7 +10,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private Camera _mainCamera;
-    private Vector3 _moveDirection; //Wordt automatisch gezet via InputManager in Edit > Project Settings > Input Manager. Staat standaard op W A S D
+    private float _jumpTime;
+    private bool _isJumping;
+    private Vector3 _verticalDirection; //Jump movement
+    private Vector3 _horizontalDirection; //WASD movement
+    private Vector3 _moveDirection; //Gecombineerd
 
     private void Awake()
     {
@@ -18,27 +22,29 @@ public class PlayerMovement : MonoBehaviour
         _mainCamera = Camera.main; //Werkt op de "MainCamera" tag
         _cameraController = _mainCamera.GetComponent<CameraController>();
         Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    private void FixedUpdate()
-    {
-        _moveDirection = Vector3.zero;
-        _moveDirection += _moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime * transform.forward; // W en S
-        _moveDirection += _moveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime * transform.right; // A en D
-
-        _playerController.Move(_moveDirection);
-
-        
-    }
+        _isJumping = false;
+    } 
 
     private void Update()
     {
-        transform.Rotate(0, Input.GetAxis("Mouse X") * _cameraController.GetSensitivity(), 0);
-    }
+        Debug.Log(_playerController.isGrounded);
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, transform.forward * 5);
+        _horizontalDirection = Vector3.zero;
+        _horizontalDirection += _moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime * transform.forward; // W en S
+        _horizontalDirection += _moveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime * transform.right; // A en D
+
+        transform.Rotate(0, Input.GetAxis("Mouse X") * _cameraController.GetSensitivity(), 0); //Draaien met de muis
+
+        if (Input.GetButtonDown("Jump") && _playerController.isGrounded)
+            _isJumping = true;
+
+        if (_jumpTime > _jumpForce / 10)
+            _isJumping = false;
+
+        _jumpTime = _isJumping ? _jumpTime += Time.deltaTime : 0;
+        _verticalDirection.y = _isJumping ? _jumpForce * Time.deltaTime : -_jumpForce * Time.deltaTime; //Dit is een hele crack manier om te springen
+
+        _moveDirection.Set(_horizontalDirection.x, _verticalDirection.y, _horizontalDirection.z);
+        _playerController.Move(_moveDirection);
     }
 }
