@@ -6,8 +6,7 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private GameObject _player;
     [SerializeField] private float _sensitivity;
-    private float _mouseY;
-    private float _xRotation;
+    private float _mouseY, _xRotation;
 
     private void Awake()
     {

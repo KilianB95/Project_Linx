@@ -7,14 +7,11 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController _playerController;
     private CameraController _cameraController;
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _jumpForce;
+    [SerializeField] private float _moveSpeed, _jumpForce;
     [SerializeField] private Camera _mainCamera;
     private float _jumpTime;
     private bool _isJumping;
-    private Vector3 _verticalDirection; //Jump movement
-    private Vector3 _horizontalDirection; //WASD movement
-    private Vector3 _moveDirection; //Gecombineerd
+    private Vector3 _verticalDirection, _horizontalDirection, _moveDirection; //Jump movement, WASD movement, gecombineerd
 
     private void Awake()
     {
