@@ -38,11 +38,11 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && _playerController.isGrounded)
             _isJumping = true;
 
-        if (_jumpTime > _jumpForce / 10)
+        if (_jumpTime > _jumpForce / 10) //Deelt _jumpForce door 10, daarna wordt je niet meer omhoog geduwd
             _isJumping = false;
 
         _jumpTime = _isJumping ? _jumpTime += Time.deltaTime : 0;
-        _verticalDirection.y = _isJumping ? _jumpForce * Time.deltaTime : -_jumpForce * Time.deltaTime; //Dit is een hele crack manier om te springen
+        _verticalDirection.y = _isJumping ? _jumpForce * Time.deltaTime : -_jumpForce * Time.deltaTime; //Wanneer _isJUmping 
 
         _moveDirection.Set(_horizontalDirection.x, _verticalDirection.y, _horizontalDirection.z);
         _playerController.Move(_moveDirection);

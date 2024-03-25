@@ -17,12 +17,12 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        transform.RotateAround(_player.transform.position, _player.transform.forward, 0);
+        transform.RotateAround(_player.transform.position, _player.transform.forward, 0); //Draai om de speler
 
         _mouseY = Input.GetAxis("Mouse Y") * _sensitivity;
 
         _xRotation -= _mouseY;
-        _xRotation = Mathf.Clamp(_xRotation, -20, 40);
+        _xRotation = Mathf.Clamp(_xRotation, -20, 40); //Clamp camera als je omhoog of omlaag kijkt
 
         transform.eulerAngles = new Vector3(_xRotation, transform.eulerAngles.y, 0.0f);
     }
