@@ -1,11 +1,19 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AccesEmoteWheel : MonoBehaviour
 {
     [SerializeField] private GameObject _emoteWheel;
-    private GameObject[] _emoteObjects;
-    private Transform _transform;
+    [SerializeField]private GameObject[] _emoteObjects;
     [SerializeField] private KeyCode _emoteWheelKeyCode;
+
+    private void Awake()
+    {
+        for (int i = 0; i < _emoteObjects.Length; i++)
+        {
+            GameObject.Find("emote" + i);
+        }
+    }
 
     private void Update()
     {
@@ -33,18 +41,14 @@ public class AccesEmoteWheel : MonoBehaviour
 
     private void TriggerEmote(int indexEmote)
     {
-        foreach (GameObject _emoteObject in _emoteObjects)
-        {
-            _emoteObject.SetActive(false);
-        }
 
         if(indexEmote >= 0 && indexEmote < _emoteObjects.Length)
         {
             _emoteObjects[indexEmote].SetActive(true);
-            _emoteObjects[indexEmote].transform.position = _transform.position + Vector3.up * 2f;
+            Debug.Log("clicked");
         }
     }
 
-    private void OnEmoteButtonClick(int indexEmote) => TriggerEmote(indexEmote);
+    public void OnEmoteButtonClick(int indexEmote) => TriggerEmote(indexEmote);
 
 }
