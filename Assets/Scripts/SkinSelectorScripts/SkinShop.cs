@@ -5,26 +5,19 @@ using UnityEngine;
 
 public class SkinShop : MonoBehaviour, IInteractable
 {
-    [SerializeField] private GameObject skinShopUI;
+    [SerializeField] private string _prompt;
+    [SerializeField] private GameObject _skinShopUI;
+    public string InteractionPrompt => _prompt;
 
-    public string _interactText()
+    public bool Interact(Interactor interactor) //Zodra je op E drukt open het skin menu.
     {
-        return "Change Skin";
+        _skinShopUI.SetActive(true);
+        Debug.Log("Skin Menu Open");
+        return true;
     }
 
-    public Transform GetTransform()
+    public void closeSkinUI() //Deze functie is voor het sluiten van het skin menu doormiddel van een button.
     {
-        return transform;
-    }
-
-    public void Interact(Transform interactorTransform)
-    {
-        OpenSkinMenu();
-    }
-
-    private void OpenSkinMenu()
-    {
-        Debug.Log("Opened Skin Menu");
-        skinShopUI.SetActive(true);
+        _skinShopUI.SetActive(false);
     }
 }

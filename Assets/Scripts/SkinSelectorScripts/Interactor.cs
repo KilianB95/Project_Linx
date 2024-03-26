@@ -5,51 +5,42 @@ using UnityEngine;
 
 public class Interactor : MonoBehaviour
 {
-    Transform _interactorTransform;
+    [SerializeField] private Transform _interactionPoint;
+    [SerializeField] private float _interactionPointRadius;
+    [SerializeField] private LayerMask _interactableMask;
+    [SerializeField] private InteractionPromptUI _interactionPromptUI;
+
+    private readonly Collider[] _colliders = new Collider[3];
+    private int _numFound;
+
+    private IInteractable _interactable;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
+
+        if (_numFound > 0)
         {
-            IInteractable interactable = InteractableObject();
-            if (interactable != null)
+            _interactable = _colliders[0].GetComponent<IInteractable>();
+
+            if (_interactable != null)
             {
-                interactable.Interact(transform);
+                if (!_interactionPromptUI._isDisplayed) _interactionPromptUI.SetUp(_interactable.InteractionPrompt);
+
+                if (Input.GetKeyDown(KeyCode.E)) _interactable.Interact(this);
             }
+        }
+        else
+        {
+            if (_interactable != null) _interactable = null;
+            if (_interactionPromptUI._isDisplayed) _interactionPromptUI.Close();
         }
     }
 
-    public IInteractable InteractableObject()
+    private void OnDrawGizmos()
     {
-        List<IInteractable> interactableList = new List<IInteractable>();
-        float interactRange = 2f;
-        Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
-        foreach (Collider collider in colliderArray)
-        {
-            if (collider.TryGetComponent(out IInteractable interactable))
-            {
-                interactableList.Add(interactable);
-            }
-        }
-
-        IInteractable closestInteracbtable = null;
-        foreach (IInteractable interactable in interactableList)
-        {
-            if (closestInteracbtable == null)
-            {
-                closestInteracbtable = interactable;
-            }
-            else
-            {
-                if(Vector3.Distance(transform.position, interactable.GetTransform().position) < 
-                   Vector3.Distance(transform.position, closestInteracbtable.GetTransform().position))
-                {
-                    closestInteracbtable = interactable;
-                }
-            }
-        }
-
-        return closestInteracbtable;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
     }
 }
 
