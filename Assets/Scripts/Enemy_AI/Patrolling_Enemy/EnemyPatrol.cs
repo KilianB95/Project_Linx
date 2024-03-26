@@ -34,9 +34,11 @@ public class EnemyPatrol : MonoBehaviour
 
         if(!_playerInSight && !_inAttackRange) 
             Patrol();
+
         if(_playerInSight && !_inAttackRange) 
             Chase();
-        if(!_playerInSight && !_inAttackRange)
+
+        if(!_playerInSight && _inAttackRange)
             Attack();
     }
 

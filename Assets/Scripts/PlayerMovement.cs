@@ -24,8 +24,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(_playerController.isGrounded);
-
         _horizontalDirection = Vector3.zero;
         _horizontalDirection += _moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime * transform.forward; // W en S
         _horizontalDirection += _moveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime * transform.right; // A en D

@@ -122,13 +122,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   _playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  _range: 20
-  _sightRange: 20
-  _attackRange: 20
+  _range: 10
+  _sightRange: 10
+  _attackRange: 10
 --- !u!54 &9073973996484741182
 Rigidbody:
   m_ObjectHideFlags: 0
