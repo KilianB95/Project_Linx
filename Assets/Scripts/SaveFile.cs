@@ -21,6 +21,20 @@ public class SaveFile : MonoBehaviour
         File.WriteAllText(_saveFilePath, jsonData);
     }
 
+    public void GetFromSaveFile()
+    {
+        if (File.Exists(_saveFilePath))
+        {
+            string loadedPlayerData = File.ReadAllText(_saveFilePath);
+
+            _playerData = JsonUtility.FromJson<PlayerData>(loadedPlayerData);
+        }
+        else
+        {
+            Debug.Log("ERROR: No save file!");
+        }
+    }
+
     public PlayerData GetPlayerData()
     {
         return _playerData;
