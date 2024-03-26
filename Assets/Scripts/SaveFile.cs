@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class SaveFile : MonoBehaviour
 {
-    private PlayerData _playerData = new PlayerData();
+    private PlayerData _playerData = new();
+    public PlayerData PlayerData { get { return _playerData; } }
     private string _saveFilePath;
 
     private void Awake()
@@ -33,10 +34,5 @@ public class SaveFile : MonoBehaviour
         {
             Debug.Log("ERROR: No save file!");
         }
-    }
-
-    public PlayerData GetPlayerData()
-    {
-        return _playerData;
     }
 }
