@@ -1,54 +1,57 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+
+[System.Serializable]
+public class EmoteButtonClicked : UnityEvent<Sprite>
+{
+}
 
 public class AccesEmoteWheel : MonoBehaviour
 {
     [SerializeField] private GameObject _emoteWheel;
-    [SerializeField]private GameObject[] _emoteObjects;
+    [SerializeField] private int _emoteAmount;
     [SerializeField] private KeyCode _emoteWheelKeyCode;
+    [SerializeField] private EmoteButtonClicked _buttonEvent;
+    private Button[] _emoteButtons;
+    private Sprite[] _emoteSprites;
 
     private void Awake()
     {
-        for (int i = 0; i < _emoteObjects.Length; i++)
+        _emoteButtons = new Button[_emoteAmount];
+        _emoteSprites = new Sprite[_emoteAmount];
+
+        for (int i = 0; i < _emoteButtons.Length; i++)
         {
-            GameObject.Find("emote" + i);
+            _emoteButtons[i] = GameObject.Find("EmoteButton" + i).GetComponent<Button>();
+            _emoteSprites[i] = GameObject.Find("Emote" + i).GetComponent<Image>().sprite;
+            int index = i; //Nodig omdat anders een array index out of bounds error gegeven wordt
+            _emoteButtons[i].onClick.AddListener(delegate { OnButtonClick(_emoteSprites[index]); });
         }
+
+        _emoteWheel = GameObject.Find("EmoteCentre");
+        _emoteWheel.SetActive(false);
     }
 
     private void Update()
     {
-        if (Input.GetKey(_emoteWheelKeyCode))
-        {
-            ShowEmoteWheel();
-            Debug.Log("Wheel Shown");
-        }
-        else
-        {
-            HideEmoteWheel();
-            Debug.Log("Wheel gone");
-        }
+        if (Input.GetKeyDown(_emoteWheelKeyCode))
+            SetEmoteWheel(true);
+
+        else if(Input.GetKeyUp(_emoteWheelKeyCode))
+            SetEmoteWheel(false);
     }
 
-    private void ShowEmoteWheel()
+    private void SetEmoteWheel(bool wheelStatus)
     {
-        _emoteWheel.SetActive(true);
+        _emoteWheel.SetActive(wheelStatus);
     }
 
-    private void HideEmoteWheel()
+    private void OnButtonClick(Sprite emoteSprite)
     {
         _emoteWheel.SetActive(false);
+        _buttonEvent.Invoke(emoteSprite);
     }
-
-    private void TriggerEmote(int indexEmote)
-    {
-
-        if(indexEmote >= 0 && indexEmote < _emoteObjects.Length)
-        {
-            _emoteObjects[indexEmote].SetActive(true);
-            Debug.Log("clicked");
-        }
-    }
-
-    public void OnEmoteButtonClick(int indexEmote) => TriggerEmote(indexEmote);
 
 }
