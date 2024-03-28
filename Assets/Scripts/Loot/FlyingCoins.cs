@@ -13,12 +13,12 @@ public class FlyingCoins : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _flyDirection += Vector3.up * _upModifier;
-        _flyDirection += Vector3.forward * _forwardModifier;
     }
 
     private void OnEnable()
     {
+        _flyDirection += transform.up * _upModifier;
+        _flyDirection += transform.forward * _forwardModifier;
         _rb.AddForce(_flyDirection);
     }
 }

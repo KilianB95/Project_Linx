@@ -22,19 +22,19 @@ public class ObjectPooling : MonoBehaviour
     }
 
     // Vanaf hier maakt die de objecten true en spawnen ze in.
-    public GameObject GetObstacle()
+    public GameObject GetObstacle(bool setActiveImmediately = true)
     {
         if (_objectPooler.Count > 0)
         {
             GameObject obstacle = _objectPooler.Dequeue();
-            obstacle.SetActive(true);
+            obstacle.SetActive(setActiveImmediately);
             return obstacle;
         }
         else
         {
             GameObject obstacle = Instantiate(_objectPool);
             _objectPooler.Enqueue(obstacle);
-            obstacle.SetActive(true);
+            obstacle.SetActive(setActiveImmediately);
             return obstacle;
         }
     }
