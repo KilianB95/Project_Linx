@@ -42,9 +42,8 @@ public class WaterGenerator : MonoBehaviour
         for(int i = 0; i < verticiesCount * verticiesCount - verticiesCount; i++)
         {
             if((i + 1) % verticiesCount == 0)
-            {
                 continue;
-            }
+            
             triangles.AddRange(new List<int>()
             {
                 i+1+verticiesCount, i+verticiesCount, i,

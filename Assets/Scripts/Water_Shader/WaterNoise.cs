@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class WaterNoise : MonoBehaviour
 {
-    [SerializeField] float _power = 3;
-    [SerializeField] float _scale = 1;
-    [SerializeField] float _timeScale = 1;
-
-    private float _xOffset;
-    private float _yOffset;
+    [SerializeField] private float _power = 3, _scale = 1, _timeScale = 1;
+    
+    private float _xOffset, _yOffset;
     private MeshFilter _meshFilter;
 
     private void Awake()
@@ -38,7 +35,7 @@ public class WaterNoise : MonoBehaviour
         _meshFilter.mesh.RecalculateNormals();
     }
 
-    float CalculateHeight(float x, float y)
+    private float CalculateHeight(float x, float y)
     {
         float xCordinate = x * _scale + _xOffset;
         float ycordinate = y * _scale + _yOffset;
