@@ -24,6 +24,7 @@ public class EnemyPatrol : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.FindWithTag("Player");
+        _player = GameObject.FindWithTag("Friendly");
     }
 
     private void Update()
